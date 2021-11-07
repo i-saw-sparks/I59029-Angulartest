@@ -22,12 +22,21 @@ export class HeroesComponent implements OnInit {
     .subscribe(heroes => this.heroes = heroes);
   }
 
-  add(name: string): void {
+  add(name: string, scoreText : string): void {
+    let score = parseInt(scoreText);
     name = name.trim();
     if (!name) { return; }
-    this.heroService.addHero({ name } as Hero)
+    this.heroService.addHero({ name, score } as Hero)
       .subscribe(hero => {
         this.heroes.push(hero);
+        this.heroes.sort((a,b)=> {
+          if(a.score > b.score){
+            return -1;
+          }else if(a.score < b.score){
+            return 1;
+          }
+          return 0;
+        })
       });
   }
 
